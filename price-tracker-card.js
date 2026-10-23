@@ -455,7 +455,7 @@ if (!window.customCards.some((card) => card.type === "price-tracker-card")) {
     name: "Price Tracker Card",
     description: "Shows the lowest price from an ordered list of price sensors.",
     preview: false,
-    documentationURL: "https://github.com/REPLACE_WITH_YOUR_GITHUB_USERNAME/price-tracker-card",
+    documentationURL: "https://github.com/tschoehuijs/Price-Tracker-Card/",
   });
 }
 
