@@ -1,0 +1,156 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "New version, for example 1.1.1 (optional v prefix)"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: price-tracker-card-release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Require a branch
+        env:
+          REF_TYPE: ${{ github.ref_type }}
+        run: |
+          test "$REF_TYPE" = branch || {
+            echo "Select a branch, not a tag."
+            exit 1
+          }
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Validate requested version
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+        run: |
+          node <<'NODE'
+          const fs = require("node:fs");
+
+          const version = process.env.INPUT_VERSION
+            .trim()
+            .replace(/^v/, "");
+
+          if (!/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/.test(version)) {
+            throw new Error("Enter a stable version such as 1.1.1.");
+          }
+
+          fs.appendFileSync(
+            process.env.GITHUB_ENV,
+            `VERSION=${version}\nTAG=v${version}\n`
+          );
+          NODE
+
+      - name: Refuse existing tags or releases
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+
+          if git show-ref --verify --quiet "refs/tags/$TAG"; then
+            echo "Tag $TAG already exists. Choose a new version."
+            exit 1
+          fi
+
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release $TAG already exists. Choose a new version."
+            exit 1
+          fi
+
+      - name: Update JavaScript version and header
+        run: |
+          node <<'NODE'
+          const fs = require("node:fs");
+
+          const file = "price-tracker-card.js";
+          let source = fs.readFileSync(file, "utf8");
+
+          const constant =
+            /const PRICE_TRACKER_CARD_VERSION\s*=\s*["'][^"']+["']/g;
+
+          const header =
+            /Version:\s*\d+\.\d+\.\d+/g;
+
+          if (
+            (source.match(constant) || []).length !== 1 ||
+            (source.match(header) || []).length !== 1
+          ) {
+            throw new Error(
+              "Expected exactly one PRICE_TRACKER_CARD_VERSION constant and one version header."
+            );
+          }
+
+          source = source
+            .replace(
+              constant,
+              `const PRICE_TRACKER_CARD_VERSION = "${process.env.VERSION}"`
+            )
+            .replace(
+              header,
+              `Version: ${process.env.VERSION}`
+            );
+
+          fs.writeFileSync(file, source);
+
+          const manifest = JSON.parse(
+            fs.readFileSync("hacs.json", "utf8")
+          );
+
+          if (manifest.filename !== file) {
+            throw new Error("Unexpected HACS filename.");
+          }
+          NODE
+
+      - name: Check JavaScript syntax
+        run: node --check price-tracker-card.js
+
+      - name: Run mocked unit tests
+        run: node --test tests/price-tracker-card.test.cjs
+
+      - name: Commit version and push selected branch
+        env:
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email \
+            "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add price-tracker-card.js
+
+          if ! git diff --cached --quiet; then
+            git commit -m "Release $TAG"
+          fi
+
+          git push origin "HEAD:refs/heads/$BRANCH"
+
+      - name: Publish release with matching JavaScript asset
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+
+          gh release create "$TAG" price-tracker-card.js \
+            --target "$(git rev-parse HEAD)" \
+            --title "Price Tracker Card $TAG" \
+            --generate-notes
