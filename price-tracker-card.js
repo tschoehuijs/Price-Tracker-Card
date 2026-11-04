@@ -2,10 +2,10 @@
  * Price Tracker Card for Home Assistant
  *
  * Card type: custom:price-tracker-card
- * Version: 1.1.0
+ * Version: 1.2.0
  */
 
-const PRICE_TRACKER_CARD_VERSION = "1.1.0";
+const PRICE_TRACKER_CARD_VERSION = "1.2.0";
 
 class PriceTrackerCard extends HTMLElement {
   constructor() {
