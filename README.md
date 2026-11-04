@@ -32,26 +32,10 @@ A custom dashboard card for Home Assistant that displays the lowest valid price 
 
 ### HACS
 
-Use the button below to add the repository to HACS:
-
-[![Open your Home Assistant instance and add this repository to HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=tschoehuijs&repository=Price-Tracker-Card&category=plugin)
-
-Alternatively:
-
-1. Open HACS in Home Assistant.
-2. Open the three-dot menu.
-3. Select **Custom repositories**.
-4. Enter:
-
-   ```text
-   https://github.com/tschoehuijs/Price-Tracker-Card
-   ```
-
-5. Select **Dashboard** as the category.
-6. Select **Add**.
-7. Search for **Price Tracker Card**.
-8. Download the latest release.
-9. Refresh the Home Assistant frontend.
+1. Open **HACS** in your Home Assistant instance.
+2. Search for **Price Tracker Card**.
+3. Click **Download**, then refresh your browser.
+4. Edit your dashboard, add **Price Tracker Card**, and configure your price sensors.
 
 ### Manual installation
 
