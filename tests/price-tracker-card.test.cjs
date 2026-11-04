@@ -558,7 +558,7 @@ test("declares one matching semantic version constant and header", () => {
   const { source } = setup();
 
   const constantMatch = source.match(
-    /const PRICE_TRACKER_CARD_VERSION\s*=\s*\d+\.\d+\.\d+["']/
+    /const PRICE_TRACKER_CARD_VERSION\s*=\s*["'](\d+\.\d+\.\d+)["']/
   );
 
   const headerMatch = source.match(
