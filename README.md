@@ -1,6 +1,6 @@
 # Price Tracker Card
 
-[![HACS validation](https://github.com/tschoehuijs/Price-Tracker-Card/actions/workflows/hacs.yml/badge.svg)](https://github.com/tschoehuijs/Price-Tracker-Card/actions/workflows/hacs.yml)
+[![Validate](https://github.com/tschoehuijs/Price-Tracker-Card/actions/workflows/hacs.yml/badge.svg)](https://github.com/tschoehuijs/Price-Tracker-Card/actions/workflows/hacs.yml)
 [![GitHub stars](https://img.shields.io/github/stars/tschoehuijs/Price-Tracker-Card?style=flat)](https://github.com/tschoehuijs/Price-Tracker-Card/stargazers)
 [![GitHub release](https://img.shields.io/github/v/release/tschoehuijs/Price-Tracker-Card?display_name=tag&sort=semver)](https://github.com/tschoehuijs/Price-Tracker-Card/releases)
 [![GitHub licence](https://img.shields.io/github/license/tschoehuijs/Price-Tracker-Card)](LICENSE)
