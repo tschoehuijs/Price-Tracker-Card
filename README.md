@@ -1,9 +1,9 @@
 # Price Tracker Card
 
-[![Validate](https://github.com/tschoehuijs/Price-Tracker-Card/actions/workflows/hacs.yml/badge.svg)](https://github.com/tschoehuijs/Price-Tracker-Card/actions/workflows/hacs.yml)
-[![GitHub stars](https://img.shields.io/github/stars/tschoehuijs/Price-Tracker-Card?style=flat)](https://github.com/tschoehuijs/Price-Tracker-Card/stargazers)
-[![GitHub release](https://img.shields.io/github/v/release/tschoehuijs/Price-Tracker-Card?display_name=tag&sort=semver)](https://github.com/tschoehuijs/Price-Tracker-Card/releases)
-[![GitHub licence](https://img.shields.io/github/license/tschoehuijs/Price-Tracker-Card)](LICENSE)
+[![Validate](https://img.shields.io/github/actions/workflow/status/tschoehuijs/Price-Tracker-Card/check.yml?label=Validate&logo=github&style=flat)](https://github.com/tschoehuijs/Price-Tracker-Card/actions/workflows/check.yml)
+[![Stars](https://img.shields.io/github/stars/tschoehuijs/Price-Tracker-Card?style=flat)](https://github.com/tschoehuijs/Price-Tracker-Card/stargazers)
+[![Release](https://img.shields.io/github/v/release/tschoehuijs/Price-Tracker-Card?label=release&style=flat)](https://github.com/tschoehuijs/Price-Tracker-Card/releases/latest)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green?style=flat)](LICENSE)
 
 A custom dashboard card for Home Assistant that displays the lowest valid price from an ordered list of sensor entities.
 
